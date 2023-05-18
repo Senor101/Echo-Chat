@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { loginRoute } from "../utils/APIRoutes";
+import { loginRoute } from "../utils/APIRoutes";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function Login() {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/");
     }
-  }, []);
+  });
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -40,24 +40,24 @@ export default function Login() {
   };
 
   const handleSubmit = async (event) => {
-    // event.preventDefault();
-    // if (validateForm()) {
-    //   const { username, password } = values;
-    //   const { data } = await axios.post(loginRoute, {
-    //     username,
-    //     password,
-    //   });
-    //   if (data.status === false) {
-    //     toast.error(data.msg, toastOptions);
-    //   }
-    //   if (data.status === true) {
-    //     localStorage.setItem(
-    //       process.env.REACT_APP_LOCALHOST_KEY,
-    //       JSON.stringify(data.user)
-    //     );
-    //     navigate("/");
-    //   }
-    // }
+    event.preventDefault();
+    if (validateForm()) {
+      const { username, password } = values;
+      const { data } = await axios.post(loginRoute, {
+        username,
+        password,
+      });
+      if (data.status === false) {
+        toast.error(data.msg, toastOptions);
+      }
+      if (data.status === true) {
+        localStorage.setItem(
+          process.env.REACT_APP_LOCALHOST_KEY,
+          JSON.stringify(data.user)
+        );
+        navigate("/");
+      }
+    }
   };
 
   return (
@@ -82,9 +82,11 @@ export default function Login() {
             onChange={(e) => handleChange(e)}
           />
           <button type="submit">Log In</button>
+
           <span>
             Don't have an account ? <Link to="/register">Create One.</Link>
           </span>
+          <a href="/">login with google</a>
         </form>
       </FormContainer>
       <ToastContainer />
@@ -114,7 +116,10 @@ const FormContainer = styled.div`
       text-transform: uppercase;
     }
   }
-
+  a {
+    color: white;
+    text-decoration: none;
+  }
   form {
     display: flex;
     flex-direction: column;

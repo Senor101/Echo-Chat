@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 
+const APIRoute = require("./routes/api");
+
 const app = express();
 
 app.use(
@@ -11,5 +13,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/v1", APIRoute);
 
 module.exports = app;

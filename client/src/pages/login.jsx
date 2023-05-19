@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginRoute } from "../utils/APIRoutes";
+import { loginRoute, host } from "../utils/APIRoutes";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ export default function Login() {
           <span>
             Don't have an account ? <Link to="/register">Create One.</Link>
           </span>
-          <a href="/">login with google</a>
+          <a href={`${host}/auth/google`}>login with google</a>
         </form>
       </FormContainer>
       <ToastContainer />

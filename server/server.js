@@ -9,11 +9,11 @@ const PORT = process.env.PORT || 8000;
 
 const server = http.createServer(app);
 
+const connectDB = require("./config/db.config");
+
+connectDB();
+
 const startServer = async () => {
-  // await mongoose.connect(process.env.MONGO_URI, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // });
   server.listen(PORT, () => {
     log(`Server listening on port ${PORT}`);
   });

@@ -7,4 +7,4 @@ api = express.Router();
 
 api.use("/auth", authRouter);
 
-module.exports = router;
+module.exports = api;

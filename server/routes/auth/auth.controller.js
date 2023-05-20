@@ -4,21 +4,26 @@ const bcrypt = require("bcrypt");
 const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    const user = await User.findOne({ username: username });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(401).json({
-        message: "Invalid credentials",
+        msg: "Invalid credentials",
+        status: false,
       });
     }
     //TODO: compare paasswords with bcrypt and authorize
-    const result = await bcrypt.compare(password, user.password);
-    if (!result) {
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
       res.status(402).json({
-        message: "Passwords donot match",
+        msg: "Passwords donot match",
+        status: false,
       });
     }
+    delete user.password;
     return res.status(200).json({
-      message: "Login successful",
+      msg: "Login successful",
+      status: true,
+      user,
     });
   } catch (error) {
     console.log(error);
@@ -28,36 +33,39 @@ const login = async (req, res, next) => {
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
-    const userNameCheck = User.findOne({ username: email });
+    const userNameCheck = await User.findOne({ username });
     if (userNameCheck) {
-      return res.status(409).json({ message: "User alreasy exists" });
+      return res
+        .status(409)
+        .json({ msg: "User alreasy exists", status: false });
     }
-    const emailCheck = User.findOne({ email: email });
+    const emailCheck = await User.findOne({ email });
     if (emailCheck) {
-      return res.status(409).json({ message: "Email already in use" });
+      return res
+        .status(409)
+        .json({ msg: "Email already in use", status: false });
     }
     //TODO hash password
     hashedPassword = await bcrypt.hash(password, 12);
-    User.create({
+    const user = await User.create({
       username: username,
       email: email,
       password: hashedPassword,
     });
-    return res.status(201).json({
-      message: "new user created",
-    });
+    await delete user.password;
+    return res.status(201).json({ status: true, user });
   } catch (error) {
     console.log(error);
   }
 };
 
-const googleLogin = async (req, res, next) => {};
+// const googleLogin = async (req, res, next) => {};
 
-const googleRegister = async (req, res, next) => {};
+// const googleRegister = async (req, res, next) => {};
 
-const normalAuth = async (req, res, next) => {};
+// const normalAuth = async (req, res, next) => {};
 
 module.exports = {
-  authentication,
-  googleAuthentication,
+  login,
+  register,
 };

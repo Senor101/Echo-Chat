@@ -16,13 +16,13 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
-    successRedirect: `${process.env.FRONTEND_URL}/chat`
+    successRedirect: `${process.env.FRONTEND_URL}/chat`,
   }),
   (req, res) => res.redirect(`${process.env.FRONTEND_URL}/chat`)
 );
 
 router.post("/login", authController.login);
 
-// router.get("/auth", authController.authentication);
+router.post("/register", authController.register);
 
 module.exports = router;

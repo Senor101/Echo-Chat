@@ -3,7 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const passport = require("passport");
 const session = require("express-session");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const MongoStore = require("connect-mongodb-session")(session);
 const { Strategy } = require("passport-google-oauth20");
 require("dotenv").config();
@@ -67,6 +67,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/v1", APIRoute);
+app.use("/v1/api", APIRoute);
 
 module.exports = app;

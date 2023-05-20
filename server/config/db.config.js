@@ -10,7 +10,7 @@ const connectDB = async () => {
     console.log("MongoDB connection SUCCESS");
   } catch (err) {
     console.log(err);
-    // process.exit(1); // stop the process if there is an error in the database connection.
+    process.exit(1); // stop the process if there is an error in the database connection.
     // The process.exit(1) means that the program will stop and the status code will be 1.
     // This is to avoid the app to continue running if there is a problem with the database connection.
     // The status code 1 means that there is an error in the database connection.

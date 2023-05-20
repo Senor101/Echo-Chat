@@ -5,20 +5,23 @@ const authController = require("./auth.controller");
 
 const router = express.Router();
 
-router.use(
+router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
 );
 
-router.use(
+router.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
+    successRedirect: `${process.env.FRONTEND_URL}/chat`
   }),
   (req, res) => res.redirect(`${process.env.FRONTEND_URL}/chat`)
 );
+
+router.post("/login", authController.login);
 
 // router.get("/auth", authController.authentication);
 

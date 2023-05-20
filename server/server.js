@@ -11,9 +11,8 @@ const server = http.createServer(app);
 
 const connectDB = require("./config/db.config");
 
-connectDB();
-
 const startServer = async () => {
+  await connectDB();
   server.listen(PORT, () => {
     log(`Server listening on port ${PORT}`);
   });

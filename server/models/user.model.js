@@ -19,7 +19,7 @@ const userSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  avatar: {
+  avatarImage: {
     type: String,
     default: "",
   },

@@ -1,10 +1,10 @@
 const express = require("express");
 
-const router = express.Router();
 const userController = require("./user.controller");
 
-router.post("/setAvatar", userController.setAvatar);
+const router = express.Router();
 
-router.get("/allUsers/:id", userController.getAllUsers);
+router.post("/setavatar/:id", userController.setAvatar);
+router.get("/allusers/:id", userController.getAllUsers);
 
 module.exports = router;

@@ -18,7 +18,7 @@ export default function Login() {
     theme: "dark",
   };
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (localStorage.getItem("chat-app-user")) {
       navigate("/");
     }
   });
@@ -51,10 +51,7 @@ export default function Login() {
         toast.error(data.msg, toastOptions);
       }
       if (data.status === true) {
-        localStorage.setItem(
-          process.env.REACT_APP_LOCALHOST_KEY,
-          JSON.stringify(data.user)
-        );
+        localStorage.setItem("chat-app-user", JSON.stringify(data.user));
         navigate("/");
       }
     }
@@ -86,7 +83,7 @@ export default function Login() {
           <span>
             Don't have an account ? <Link to="/register">Create One.</Link>
           </span>
-          <a href={`${host}/auth/google`}>login with google</a>
+          <a href={`${host}/api/auth/google`}>login with google</a>
         </form>
       </FormContainer>
       <ToastContainer />

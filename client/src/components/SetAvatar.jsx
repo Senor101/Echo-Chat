@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { setAvatarRoute } from "../utils/APIRoutes";
 export default function SetAvatar() {
-  const api = `https://api.dicebear.com/6.x/lorelei/svg`;
+  const api = `https://api.multiavatar.com/1`;
   const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +26,7 @@ export default function SetAvatar() {
       if (!localStorage.getItem("chat-app-user")) navigate("/login");
     }
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const setProfilePicture = async () => {
     if (selectedAvatar === undefined) {
@@ -37,11 +37,11 @@ export default function SetAvatar() {
       const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
         image: avatars[selectedAvatar],
       });
-
+      console.log(data);
       if (data.isSet) {
         user.isAvatarImageSet = true;
-        user.avatarImage = data.image;
-        localStorage.setItem("chat-app-user", JSON.stringify(user));
+        user.avatarImage = await data.image;
+        // localStorage.setItem("chat-app-user", JSON.stringify(user));
         navigate("/");
       } else {
         toast.error("Error setting avatar. Please try again.", toastOptions);
@@ -54,7 +54,9 @@ export default function SetAvatar() {
       const data = [];
       for (let i = 0; i < 4; i++) {
         const image = await axios.get(
-          `${api}/${Math.round(Math.random() * 1000)}`
+          `${api}/${Math.round(Math.random() * 1000)}?apikey=${
+            process.env.REACT_APP_MULTI_AVATAR_KEY
+          }`
         );
         const buffer = new Buffer(image.data);
         data.push(buffer.toString("base64"));
@@ -63,7 +65,7 @@ export default function SetAvatar() {
       setIsLoading(false);
     }
     fetchData();
-  }, []);
+  });
   return (
     <>
       {isLoading ? (

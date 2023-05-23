@@ -8,12 +8,13 @@ const setAvatar = async (req, res, next) => {
       userId,
       {
         isAvatarImageSet: true,
-        avatarImage,
+        avatarImage: avatarImage,
       },
       {
         new: true,
       }
     );
+    // console.log(userData);
     return res
       .status(201)
       .json({ isSet: userData.isAvatarImageSet, image: userData.avatarImage });
@@ -25,7 +26,7 @@ const setAvatar = async (req, res, next) => {
 const getAllUsers = async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const users = await User.find({ _id: { $nt: userId } }).select([
+    const users = await User.find({ _id: { $ne: userId } }).select([
       "email",
       "username",
       "avatar",

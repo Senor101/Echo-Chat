@@ -16,14 +16,10 @@ export default function Chat() {
   const [currentUser, setCurrentUser] = useState(undefined);
   useEffect(() => {
     const setUser = async () => {
-      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+      if (!localStorage.getItem("chat-app-user")) {
         navigate("/login");
       } else {
-        setCurrentUser(
-          await JSON.parse(
-            localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-          )
-        );
+        setCurrentUser(await JSON.parse(localStorage.getItem("chat-app-user")));
       }
     };
     setUser();
@@ -40,8 +36,6 @@ export default function Chat() {
       if (currentUser) {
         const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
         setContacts(data.data);
-      } else {
-        navigate("/setAvatar");
       }
     };
     currentUserAvatar();

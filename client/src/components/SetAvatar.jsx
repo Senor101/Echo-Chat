@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { setAvatarRoute } from "../utils/APIRoutes";
 export default function SetAvatar() {
-  const api = `https://api.multiavatar.com/1`;
+  const api = `https://api.multiavatar.com/4645646`;
   const navigate = useNavigate();
   const [avatars, setAvatars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,27 +21,30 @@ export default function SetAvatar() {
     theme: "dark",
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!localStorage.getItem("chat-app-user")) navigate("/login");
-    }
-    fetchData();
-  }, [navigate]);
+  useEffect(async () => {
+    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY))
+      navigate("/login");
+  }, []);
 
   const setProfilePicture = async () => {
     if (selectedAvatar === undefined) {
       toast.error("Please select an avatar", toastOptions);
     } else {
-      const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+      const user = await JSON.parse(
+        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      );
 
       const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
         image: avatars[selectedAvatar],
       });
-      console.log(data);
+
       if (data.isSet) {
         user.isAvatarImageSet = true;
-        user.avatarImage = await data.image;
-        // localStorage.setItem("chat-app-user", JSON.stringify(user));
+        user.avatarImage = data.image;
+        localStorage.setItem(
+          process.env.REACT_APP_LOCALHOST_KEY,
+          JSON.stringify(user)
+        );
         navigate("/");
       } else {
         toast.error("Error setting avatar. Please try again.", toastOptions);
@@ -49,23 +52,18 @@ export default function SetAvatar() {
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const data = [];
-      for (let i = 0; i < 4; i++) {
-        const image = await axios.get(
-          `${api}/${Math.round(Math.random() * 1000)}?apikey=${
-            process.env.REACT_APP_MULTI_AVATAR_KEY
-          }`
-        );
-        const buffer = new Buffer(image.data);
-        data.push(buffer.toString("base64"));
-      }
-      setAvatars(data);
-      setIsLoading(false);
+  useEffect(async () => {
+    const data = [];
+    for (let i = 0; i < 4; i++) {
+      const image = await axios.get(
+        `${api}/${Math.round(Math.random() * 1000)}`
+      );
+      const buffer = new Buffer(image.data);
+      data.push(buffer.toString("base64"));
     }
-    fetchData();
-  });
+    setAvatars(data);
+    setIsLoading(false);
+  }, []);
   return (
     <>
       {isLoading ? (

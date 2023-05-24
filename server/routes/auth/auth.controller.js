@@ -59,7 +59,15 @@ const register = async (req, res, next) => {
   }
 };
 
-const logout = (req, res, next) => {};
+const logout = (req, res, next) => {
+  try {
+    if (!req.params.id) return res.json({ msg: "User id is required " });
+    onlineUsers.delete(req.params.id);
+    return res.status(200).send();
+  } catch (error) {
+    next(error);
+  }
+};
 
 // const googleLogin = async (req, res, next) => {};
 

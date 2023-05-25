@@ -16,17 +16,14 @@ export default function Logout() {
       navigate("/login");
     }
   };
-  return (
-    <Button onClick={handleClick}>
-      <BiPowerOff />
-    </Button>
-  );
+  return <Button onClick={handleClick}>Log out</Button>;
 }
 
 const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1.1rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
   background-color: #9a86f3;

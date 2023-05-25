@@ -14,7 +14,7 @@ const getMessage = async (req, res, next) => {
         message: message.message.text,
       };
     });
-    res.status(200).json(projectedMessage);
+    return res.status(200).json(projectedMessage);
   } catch (error) {
     console.log(error);
   }

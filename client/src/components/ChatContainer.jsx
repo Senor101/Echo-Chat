@@ -9,7 +9,7 @@ import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
 export default function ChatContainer({ currentChat, socket }) {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState();
 
   useEffect(async () => {
     const data = await JSON.parse(

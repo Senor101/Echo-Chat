@@ -1,7 +1,7 @@
 const http = require("http");
 const mongoose = require("mongoose");
 const app = require("./app");
-const { Server } = require("socket.io");
+const socket = require("socket.io");
 
 require("dotenv").config();
 
@@ -20,7 +20,7 @@ const startServer = async () => {
 
 startServer();
 
-const io = new Server(server, {
+const io = socket(server, {
   cors: {
     origin: "http://localhost:3000",
     credentials: true,
@@ -32,11 +32,13 @@ global.onlineUsers = new Map();
 io.on("connection", (socket) => {
   global.chatSocket = socket;
   socket.on("add-user", (userId) => {
+    console.log(socket.id);
     onlineUsers.set(userId, socket.id);
   });
 
   socket.on("send-msg", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
+    console.log(sendUserSocket);
     if (sendUserSocket) {
       socket.to(sendUserSocket).emit("msg-recieve", data.msg);
     }

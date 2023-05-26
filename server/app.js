@@ -7,6 +7,7 @@ const socket = require("socket.io");
 const MongoStore = require("connect-mongodb-session")(session);
 const { Strategy } = require("passport-google-oauth20");
 require("dotenv").config();
+const path = require("path");
 
 const APIRoute = require("./routes/api");
 
@@ -47,6 +48,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(helmet());
 app.use(

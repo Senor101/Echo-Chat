@@ -5,7 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginRoute } from "../utils/APIRoutes";
+import {
+  loginRoute,
+  googleAuthRoute,
+  googleLoginRoute,
+} from "../utils/APIRoutes";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -55,9 +59,24 @@ export default function Login() {
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
-
         navigate("/");
       }
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    window.location.href = googleAuthRoute;
+    const { data } = await axios.get(googleLoginRoute);
+    console.log(data);
+    if (data.status === false) {
+      toast.error(data.msg, toastOptions);
+    }
+    if (data.status === true) {
+      localStorage.setItem(
+        process.env.REACT_APP_LOCALHOST_KEY,
+        JSON.stringify(data.user)
+      );
+      navigate("/");
     }
   };
 
@@ -87,6 +106,10 @@ export default function Login() {
             Don't have an account ? <Link to="/register">Create One.</Link>
           </span>
         </form>
+
+        <button type="button" onClick={() => handleGoogleLogin()}>
+          Continue with Google
+        </button>
       </FormContainer>
       <ToastContainer />
     </>

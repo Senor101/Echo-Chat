@@ -10,6 +10,7 @@ require("dotenv").config();
 const path = require("path");
 
 const APIRoute = require("./routes/api");
+const { googleLogin } = require("./routes/auth/auth.controller");
 
 const config = {
   CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -21,7 +22,7 @@ const config = {
 
 const store = new MongoStore({
   uri: config.MONGO_URI,
-  collection: "App_Sessions",
+  collection: "App_session",
 });
 
 const AUTH_OPTIONS = {
@@ -31,7 +32,7 @@ const AUTH_OPTIONS = {
 };
 
 const verifyCallback = (accessToken, refreshToken, profile, done) => {
-  console.log("Google profile", profile);
+  // console.log("Google profile", profile);
   done(null, profile);
 };
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
@@ -48,7 +49,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public")));
 
 app.use(helmet());
 app.use(
@@ -69,6 +70,15 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/v1/api", APIRoute);
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
+  }),
+  googleLogin
+  // res.redirect(`${process.env.FRONTEND_URL}/chat`)
+);
+
+app.use("/api/v1", APIRoute);
 
 module.exports = app;

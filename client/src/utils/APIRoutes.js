@@ -1,8 +1,10 @@
 export const host = "http://localhost:8000";
-export const loginRoute = `${host}/v1/api/auth/login`;
-export const registerRoute = `${host}/v1/api/auth/register`;
-export const logoutRoute = `${host}/v1/api/auth/logout`;
-export const allUsersRoute = `${host}/v1/api/user/allusers`;
-export const sendMessageRoute = `${host}/v1/api/chat/sendmsg`;
-export const recieveMessageRoute = `${host}/v1/api/chat/getmsg`;
-export const setAvatarRoute = `${host}/v1/api/user/setavatar`;
+export const loginRoute = `${host}/api/v1/auth/login`;
+export const registerRoute = `${host}/api/v1/auth/register`;
+export const logoutRoute = `${host}/api/v1/auth/logout`;
+export const allUsersRoute = `${host}/api/v1/user/allusers`;
+export const sendMessageRoute = `${host}/api/v1/chat/sendmsg`;
+export const recieveMessageRoute = `${host}/api/v1/chat/getmsg`;
+export const setAvatarRoute = `${host}/api/v1/user/setavatar`;
+export const googleAuthRoute = `${host}/api/v1/auth/google`;
+export const googleLoginRoute = `${host}/api/v1/auth/googlelogin`;

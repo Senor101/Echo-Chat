@@ -69,14 +69,40 @@ const logout = (req, res, next) => {
   }
 };
 
-// const googleLogin = async (req, res, next) => {};
-
-// const googleRegister = async (req, res, next) => {};
-
-// const normalAuth = async (req, res, next) => {};
+const googleLogin = async (req, res, next) => {
+  console.log(req.body);
+  try {
+    const userProfile = req.user._json;
+    console.log(userProfile);
+    const userName = userProfile.given_name;
+    const email = userProfile.email;
+    const user = await User.findOne({ username: userName });
+    console.log(user);
+    if (user) {
+      return res
+        .status(200)
+        .json({ msg: "Login Successful", status: true, user });
+    } else {
+      const emailCheck = await User.findOne({ email });
+      if (!emailCheck) {
+        const user = await User.create({
+          username: userName,
+          email: email,
+          password: "XXXXXXXXXXXXXXX",
+        });
+        return res.status(201).json({ status: true, user });
+      } else {
+        return res.status(500).json({ status: false });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   login,
   register,
   logout,
+  googleLogin,
 };

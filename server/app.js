@@ -10,7 +10,6 @@ require("dotenv").config();
 const path = require("path");
 
 const APIRoute = require("./routes/api");
-const { googleLogin } = require("./routes/auth/auth.controller");
 
 const config = {
   CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
@@ -26,7 +25,7 @@ const store = new MongoStore({
 });
 
 const AUTH_OPTIONS = {
-  callbackURL: "http://localhost:8000/auth/google/callback",
+  callbackURL: "http://localhost:8000/api/v1/auth/google/callback",
   clientID: config.CLIENT_ID,
   clientSecret: config.CLIENT_SECRET,
 };
@@ -69,15 +68,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: `${process.env.FRONTEND_URL}/login`,
-  }),
-  googleLogin
-  // res.redirect(`${process.env.FRONTEND_URL}/chat`)
-);
 
 app.use("/api/v1", APIRoute);
 

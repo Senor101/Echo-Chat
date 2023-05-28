@@ -70,7 +70,6 @@ const logout = (req, res, next) => {
 };
 
 const googleLogin = async (req, res, next) => {
-  console.log(req.body);
   try {
     const userProfile = req.user._json;
     console.log(userProfile);

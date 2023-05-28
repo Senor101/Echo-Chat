@@ -66,7 +66,7 @@ export default function Login() {
 
   const handleGoogleLogin = async () => {
     window.location.href = googleAuthRoute;
-    const { data } = await axios.get(googleLoginRoute);
+    const { data } = await axios.get(googleAuthRoute);
     console.log(data);
     if (data.status === false) {
       toast.error(data.msg, toastOptions);

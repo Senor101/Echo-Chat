@@ -56,13 +56,13 @@ export default function Chat() {
   }, [currentUser]);
 
   useEffect(() => {
-    const setContacts = async () => {
+    const setContact = async () => {
       if (currentUser) {
         const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
         setContacts(data.data);
       }
     };
-    setContacts();
+    setContact();
   }, [currentUser]);
 
   const handleChatChange = (chat) => {

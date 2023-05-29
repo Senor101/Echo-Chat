@@ -17,8 +17,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cookie-session": "^2.0.0"
-  }
+  "license": "ISC"
 }

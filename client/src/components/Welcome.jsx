@@ -10,6 +10,7 @@ export default function Welcome() {
       ).username
     );
   }, []);
+
   return (
     <Container>
       <h1>

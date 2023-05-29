@@ -14,17 +14,40 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
-  useEffect(async () => {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/login");
-    } else {
-      setCurrentUser(
-        await JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
-        )
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await axios.get(
+        "http://localhost:8000/api/v1/auth/googlelogin",
+        { withCredentials: true }
       );
-    }
+      console.log(data);
+      if (data.status === true) {
+        localStorage.setItem(
+          process.env.REACT_APP_LOCALHOST_KEY,
+          JSON.stringify(data.user)
+        );
+      }
+      setCurrentUser(data.user);
+    };
+    getUser();
   }, []);
+
+  useEffect(() => {
+    const setUser = async () => {
+      if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+        navigate("/login");
+      } else {
+        setCurrentUser(
+          await JSON.parse(
+            localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+          )
+        );
+      }
+    };
+    setUser();
+  }, []);
+
   useEffect(() => {
     if (currentUser) {
       socket.current = io(host);
@@ -32,16 +55,16 @@ export default function Chat() {
     }
   }, [currentUser]);
 
-  useEffect(async () => {
-    if (currentUser) {
-      if (currentUser.isAvatarImageSet) {
+  useEffect(() => {
+    const setContacts = async () => {
+      if (currentUser) {
         const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
         setContacts(data.data);
-      } else {
-        navigate("/setAvatar");
       }
-    }
+    };
+    setContacts();
   }, [currentUser]);
+
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
   };

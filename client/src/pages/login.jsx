@@ -5,11 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Logo from "../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {
-  loginRoute,
-  googleAuthRoute,
-  googleLoginRoute,
-} from "../utils/APIRoutes";
+import { loginRoute, googleAuthRoute } from "../utils/APIRoutes";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -21,11 +17,11 @@ export default function Login() {
     draggable: true,
     theme: "dark",
   };
-  useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   const handleChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
@@ -64,20 +60,8 @@ export default function Login() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    window.location.href = googleAuthRoute;
-    const { data } = await axios.get(googleAuthRoute);
-    console.log(data);
-    if (data.status === false) {
-      toast.error(data.msg, toastOptions);
-    }
-    if (data.status === true) {
-      localStorage.setItem(
-        process.env.REACT_APP_LOCALHOST_KEY,
-        JSON.stringify(data.user)
-      );
-      navigate("/");
-    }
+  const handleGoogleLogin = async (event) => {
+    window.open(googleAuthRoute, "_self");
   };
 
   return (
@@ -107,7 +91,7 @@ export default function Login() {
           </span>
         </form>
 
-        <button type="button" onClick={() => handleGoogleLogin()}>
+        <button type="button" onClick={(event) => handleGoogleLogin(event)}>
           Continue with Google
         </button>
       </FormContainer>

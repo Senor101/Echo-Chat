@@ -14,7 +14,7 @@ const login = async (req, res, next) => {
     //TODO: compare paasswords with bcrypt and authorize
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      res.status(402).json({
+      return res.status(402).json({
         msg: "Passwords donot match",
         status: false,
       });
@@ -71,7 +71,15 @@ const logout = (req, res, next) => {
 
 const googleLogin = async (req, res, next) => {
   try {
-    const userProfile = req.user._json;
+    // console.log(req.session.user);
+    // if (req.session.user) {
+    //   res.status(200).json({
+    //     status: true,
+    //     msg: "success",
+    //     user: req.session.user,
+    //   });
+    // }
+    const userProfile = req.session.user;
     console.log(userProfile);
     const userName = userProfile.given_name;
     const email = userProfile.email;

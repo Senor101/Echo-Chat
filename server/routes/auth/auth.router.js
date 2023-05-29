@@ -17,8 +17,11 @@ router.get(
   passport.authenticate("google", {
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
   }),
-  authController.googleLogin
-  // res.redirect(`${process.env.FRONTEND_URL}/chat`)
+  (req, res) => {
+    const userProfile = req.user._json;
+    req.session.user = userProfile;
+    res.redirect(`${process.env.FRONTEND_URL}`);
+  }
 );
 
 router.post("/login", authController.login);
@@ -27,6 +30,6 @@ router.post("/register", authController.register);
 
 router.get("/logout/:id", authController.logout);
 
-// router.get("/googlelogin", authController.googleLogin);
+router.get("/googlelogin", authController.googleLogin);
 
 module.exports = router;

@@ -1,0 +1,1 @@
+GET http://localhost:8000/api/v1/user/allusers/6474d1e7fcdc393572ef8cb0

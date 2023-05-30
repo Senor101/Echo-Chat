@@ -14,6 +14,7 @@ export default function Chat() {
   const [contacts, setContacts] = useState([]);
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [userAuth, setUserAuth] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -21,14 +22,12 @@ export default function Chat() {
         "http://localhost:8000/api/v1/auth/googlelogin",
         { withCredentials: true }
       );
-      console.log(data);
       if (data.status === true) {
         localStorage.setItem(
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
       }
-      setCurrentUser(data.user);
     };
     getUser();
   }, []);
@@ -58,10 +57,12 @@ export default function Chat() {
   useEffect(() => {
     const setContact = async () => {
       if (currentUser) {
+        console.log(currentUser);
         const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
         setContacts(data.data);
       }
     };
+
     setContact();
   }, [currentUser]);
 

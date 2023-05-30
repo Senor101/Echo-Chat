@@ -88,7 +88,7 @@ const googleLogin = async (req, res, next) => {
     if (user) {
       return res
         .status(200)
-        .json({ msg: "Login Successful", status: true, user });
+        .json({ msg: "Login Successful", status: true, user, google: true });
     } else {
       const emailCheck = await User.findOne({ email });
       if (!emailCheck) {
@@ -97,7 +97,9 @@ const googleLogin = async (req, res, next) => {
           email: email,
           password: "XXXXXXXXXXXXXXX",
         });
-        return res.status(201).json({ status: true, user });
+        return res
+          .status(201)
+          .json({ msg: "register", status: true, user, google: true });
       } else {
         return res.status(500).json({ status: false });
       }

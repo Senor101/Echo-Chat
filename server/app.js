@@ -6,7 +6,6 @@ const session = require("express-session");
 const socket = require("socket.io");
 const MongoStore = require("connect-mongodb-session")(session);
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const cookieSession = require("cookie-session");
 require("dotenv").config();
 const path = require("path");
 

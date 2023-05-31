@@ -7,7 +7,9 @@ const getMessage = async (req, res, next) => {
       users: {
         $all: [from, to],
       },
-    }).sort({ updatedAt: 1 });
+    })
+      .sort({ updatedAt: 1 })
+      .exec();
     const projectedMessage = messages.map((message) => {
       return {
         fromSelf: message.sender.toString() === from,

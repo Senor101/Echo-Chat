@@ -37,7 +37,7 @@ const register = async (req, res, next) => {
     if (userNameCheck) {
       return res
         .status(409)
-        .json({ msg: "User alreasy exists", status: false });
+        .json({ msg: "User already exists", status: false });
     }
     const emailCheck = await User.findOne({ email });
     if (emailCheck) {
@@ -63,9 +63,11 @@ const logout = (req, res, next) => {
   try {
     if (!req.params.id) return res.json({ msg: "User id is required " });
     onlineUsers.delete(req.params.id);
-    return res.status(200).send();
+    return res
+      .status(200)
+      .json({ msg: "User logout successful", status: true });
   } catch (error) {
-    next(error);
+    console.log(error);
   }
 };
 
